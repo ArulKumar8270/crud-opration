@@ -1,24 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
-
+import CrudPage from './Components/Crud-Componts';
+import LoginRegister from './Components/LoginRegister-Componets';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
+import { useEffect } from 'react';
+import { isUserLogedIn } from './action';
 function App() {
+
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth);
+
+  useEffect(() => {
+    if(!auth.authenticate){
+      dispatch(isUserLogedIn())
+    }
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path='/' element={<LoginRegister />} /> 
+        <Route exact path='/Crud' element={<CrudPage />} />
+      </Routes>
+    </Router>
   );
 }
 
